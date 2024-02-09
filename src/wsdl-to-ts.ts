@@ -153,7 +153,7 @@ function wsdlTypeToInterfaceString(d: { [k: string]: any }, opts: IInterfaceOpti
                 r.push(v.substring(0, i));
 
                 // for types like "xsd:string" only the "string" part is used
-                const rawtype = v.substring(i).trim();
+                const rawtype = v.substring(i).trim().replace('maxlength','string').replace('pattern','string');
                 const colon = rawtype.indexOf(":");
                 if (colon !== -1) {
                     const preamble = rawtype.substring(0, colon);
