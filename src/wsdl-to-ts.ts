@@ -253,7 +253,7 @@ export function wsdl2ts(wsdlUri: string, opts?: IInterfaceOptions): Promise<ITyp
                 if (collectedKeys.length) {
                     const ns: { [k: string]: string } = r.namespaces[service][port][collector.ns] = {};
                     for (const k of collectedKeys) {
-                        ns[k] = "export interface I" + k + " " + collector.registered[k];
+                        ns[k] = "export interface I" + k.replace('-','') + " " + collector.registered[k];
                     }
                 }
 

@@ -228,7 +228,7 @@ export function wsdl2ts(wsdlUri, opts) {
                 if (collectedKeys.length) {
                     const ns = r.namespaces[service][port][collector.ns] = {};
                     for (const k of collectedKeys) {
-                        ns[k] = "export interface I" + k + " " + collector.registered[k];
+                        ns[k] = "export interface I" + k.replace('-', '') + " " + collector.registered[k];
                     }
                 }
                 for (const method of Object.keys(d[service][port])) {
