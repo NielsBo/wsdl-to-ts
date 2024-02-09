@@ -92,7 +92,7 @@ function wsdlTypeToInterfaceObj(obj: IInterfaceObject, typeCollector?: TypeColle
                 let s = wsdlTypeToInterfaceString(to);
                 if (typeCollector && typeCollector.ns) {
                     if (typeCollector.registered.hasOwnProperty(k2) && typeCollector.registered[k2] === s) {
-                        s = typeCollector.ns + ".I" + k2 + ";";
+                        s = typeCollector.ns + ".I" + k2.replace('-','') + ";";
                     } else if (typeCollector.collected.hasOwnProperty(k2)) {
                         if (typeCollector.collected[k2] !== s) {
                             typeCollector.collected[k2] = null;
@@ -121,7 +121,7 @@ function wsdlTypeToInterfaceObj(obj: IInterfaceObject, typeCollector?: TypeColle
                 if (typeCollector && typeCollector.ns) {
                     const ss = wsdlTypeToInterfaceString(to);
                     if (typeCollector.registered.hasOwnProperty(k2) && typeCollector.registered[k2] === ss) {
-                        tr = typeCollector.ns + ".I" + k2 + ";";
+                        tr = typeCollector.ns + ".I" + k2.replace('-','') + ";";
                     } else if (typeCollector.collected.hasOwnProperty(k2)) {
                         if (typeCollector.collected[k2] !== ss) {
                             typeCollector.collected[k2] = null;
