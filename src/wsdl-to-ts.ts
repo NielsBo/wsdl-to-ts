@@ -345,7 +345,7 @@ export function outputTypedWsdl(a: ITypedWsdl): Array<{ file: string, data: stri
             const d: { file: string, data: string[] } = { file: a.files[service][port], data: [] };
             if (a.types[service] && a.types[service][port]) {
                 for (const type of Object.keys(a.types[service][port])) {
-                    d.data.push("export interface " + type + " " + a.types[service][port][type]);
+                    d.data.push("export interface " + type.replace('-','') + " " + a.types[service][port][type]);
                 }
             }
             if (a.methods[service] && a.methods[service][port]) {
