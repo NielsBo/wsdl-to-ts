@@ -76,7 +76,7 @@ function wsdlTypeToInterfaceObj(obj: IInterfaceObject, typeCollector?: TypeColle
                 if (tdsplit.length) {
                     typeClass = "\"" + tdsplit.join("\" | \"") + "\"";
                 }
-                typeClass = typeClass.replace('-','')
+                typeClass = typeClass.replace(/-/g,'')
             }
             if (isArray) {
                 if (/^[A-Za-z0-9.]+$/.test(typeClass)) {
@@ -93,7 +93,7 @@ function wsdlTypeToInterfaceObj(obj: IInterfaceObject, typeCollector?: TypeColle
                 let s = wsdlTypeToInterfaceString(to);
                 if (typeCollector && typeCollector.ns) {
                     if (typeCollector.registered.hasOwnProperty(k2) && typeCollector.registered[k2] === s) {
-                        s = typeCollector.ns + ".I" + k2.replace('-','') + ";";
+                        s = typeCollector.ns + ".I" + k2.replace(/-/g,'') + ";";
                     } else if (typeCollector.collected.hasOwnProperty(k2)) {
                         if (typeCollector.collected[k2] !== s) {
                             typeCollector.collected[k2] = null;
@@ -108,7 +108,7 @@ function wsdlTypeToInterfaceObj(obj: IInterfaceObject, typeCollector?: TypeColle
                     const i = s.indexOf("*/") + 2;
                     s = s.substring(0, i) + " Array<" + s.substring(i).trim().replace(/;$/, "") + ">;";
                 } else {
-                    s = s.trim().replace(/;$/, "").replace('-','');
+                    s = s.trim().replace(/;$/, "").replace(/-/g,'');
                     if (/^[A-Za-z0-9.]+$/.test(s)) {
                         s += "[];";
                     } else {
@@ -122,7 +122,7 @@ function wsdlTypeToInterfaceObj(obj: IInterfaceObject, typeCollector?: TypeColle
                 if (typeCollector && typeCollector.ns) {
                     const ss = wsdlTypeToInterfaceString(to);
                     if (typeCollector.registered.hasOwnProperty(k2) && typeCollector.registered[k2] === ss) {
-                        tr = typeCollector.ns + ".I" + k2.replace('-','') + ";";
+                        tr = typeCollector.ns + ".I" + k2.replace(/-/g,'') + ";";
                     } else if (typeCollector.collected.hasOwnProperty(k2)) {
                         if (typeCollector.collected[k2] !== ss) {
                             typeCollector.collected[k2] = null;
