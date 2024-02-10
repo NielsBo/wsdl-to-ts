@@ -47,7 +47,7 @@ export class TypeCollector {
 
 function isNumberTypeClass(superTypeClass: string) {
   return (
-    ["integer", "decimal", "int","totalDigits"].indexOf(
+    ["integer", "decimal", "int", "totalDigits"].indexOf(
       superTypeClass.replace("xs:", "").replace("xsd:", "")
     ) > -1
   );
@@ -193,7 +193,8 @@ function wsdlTypeToInterfaceString(
           .replace("fractionDigits", "")
           .replace("int", "number")
           .replace("dateTime", "string")
-          .replace("date", "string");
+          .replace("date", "string")
+          .replace(",", "");
         const colon = rawtype.indexOf(":");
         if (colon !== -1) {
           const preamble = rawtype.substring(0, colon);

@@ -155,7 +155,8 @@ function wsdlTypeToInterfaceString(d, opts = {}) {
                     .replace("fractionDigits", "")
                     .replace("int", "number")
                     .replace("dateTime", "string")
-                    .replace("date", "string");
+                    .replace("date", "string")
+                    .replace(",", "");
                 const colon = rawtype.indexOf(":");
                 if (colon !== -1) {
                     const preamble = rawtype.substring(0, colon);
