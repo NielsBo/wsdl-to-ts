@@ -76,6 +76,7 @@ function wsdlTypeToInterfaceObj(obj: IInterfaceObject, typeCollector?: TypeColle
                 if (tdsplit.length) {
                     typeClass = "\"" + tdsplit.join("\" | \"") + "\"";
                 }
+                typeClass = typeClass.replace('-','')
             }
             if (isArray) {
                 if (/^[A-Za-z0-9.]+$/.test(typeClass)) {
@@ -107,7 +108,7 @@ function wsdlTypeToInterfaceObj(obj: IInterfaceObject, typeCollector?: TypeColle
                     const i = s.indexOf("*/") + 2;
                     s = s.substring(0, i) + " Array<" + s.substring(i).trim().replace(/;$/, "") + ">;";
                 } else {
-                    s = s.trim().replace(/;$/, "");
+                    s = s.trim().replace(/;$/, "").replace('-','');
                     if (/^[A-Za-z0-9.]+$/.test(s)) {
                         s += "[];";
                     } else {
