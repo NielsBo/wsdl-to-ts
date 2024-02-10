@@ -21,7 +21,7 @@ export class TypeCollector {
     }
 }
 function isNumberTypeClass(superTypeClass) {
-    return ["integer", "decimal", "int"].indexOf(superTypeClass.replace("xs:", "").replace("xsd:", "")) > -1;
+    return (["integer", "decimal", "int"].indexOf(superTypeClass.replace("xs:", "").replace("xsd:", "")) > -1);
 }
 function wsdlTypeToInterfaceObj(obj, typeCollector) {
     const r = {};
@@ -36,20 +36,25 @@ function wsdlTypeToInterfaceObj(obj, typeCollector) {
         if (t === "string") {
             const vstr = v;
             const [typeName, superTypeClass, typeData] = vstr.indexOf("|") === -1 ? [vstr, vstr, undefined] : vstr.split("|");
-            const typeFullName = obj.targetNamespace ? obj.targetNamespace + "#" + typeName : typeName;
+            const typeFullName = obj.targetNamespace
+                ? obj.targetNamespace + "#" + typeName
+                : typeName;
             let typeClass = superTypeClass === "integer" ? "number" : superTypeClass;
             if (isNumberTypeClass(superTypeClass)) {
                 typeClass = "number";
             }
             else if (nsEnums[typeFullName] || typeData) {
-                const filter = nsEnums[typeFullName] ?
-                    () => true :
-                    (x) => x !== "length" && x !== "pattern" && x !== "maxLength" && x !== "minLength";
+                const filter = nsEnums[typeFullName]
+                    ? () => true
+                    : (x) => x !== "length" &&
+                        x !== "pattern" &&
+                        x !== "maxLength" &&
+                        x !== "minLength";
                 const tdsplit = typeData.split(",").filter(filter);
                 if (tdsplit.length) {
-                    typeClass = "\"" + tdsplit.join("\" | \"") + "\"";
+                    typeClass = '"' + tdsplit.join('" | "') + '"';
                 }
-                typeClass = typeClass.replace(/-/g, '');
+                typeClass = typeClass.replace(/-/g, "");
             }
             if (isArray) {
                 if (/^[A-Za-z0-9.]+$/.test(typeClass)) {
@@ -59,7 +64,8 @@ function wsdlTypeToInterfaceObj(obj, typeCollector) {
                     typeClass = "Array<" + typeClass + ">";
                 }
             }
-            r[k2] = "/** " + typeFullName + "(" + typeData + ") */ " + typeClass + ";";
+            r[k2] =
+                "/** " + typeFullName + "(" + typeData + ") */ " + typeClass + ";";
         }
         else {
             const to = wsdlTypeToInterfaceObj(v, typeCollector);
@@ -67,8 +73,9 @@ function wsdlTypeToInterfaceObj(obj, typeCollector) {
             if (isArray) {
                 let s = wsdlTypeToInterfaceString(to);
                 if (typeCollector && typeCollector.ns) {
-                    if (typeCollector.registered.hasOwnProperty(k2) && typeCollector.registered[k2] === s) {
-                        s = typeCollector.ns + ".I" + k2.replace(/-/g, '') + ";";
+                    if (typeCollector.registered.hasOwnProperty(k2) &&
+                        typeCollector.registered[k2] === s) {
+                        s = typeCollector.ns + ".I" + k2.replace(/-/g, "") + ";";
                     }
                     else if (typeCollector.collected.hasOwnProperty(k2)) {
                         if (typeCollector.collected[k2] !== s) {
@@ -82,10 +89,14 @@ function wsdlTypeToInterfaceObj(obj, typeCollector) {
                 s = s.replace(/\n/g, "\n    ");
                 if (s.startsWith("/**")) {
                     const i = s.indexOf("*/") + 2;
-                    s = s.substring(0, i) + " Array<" + s.substring(i).trim().replace(/;$/, "") + ">;";
+                    s =
+                        s.substring(0, i) +
+                            " Array<" +
+                            s.substring(i).trim().replace(/;$/, "") +
+                            ">;";
                 }
                 else {
-                    s = s.trim().replace(/;$/, "").replace(/-/g, '');
+                    s = s.trim().replace(/;$/, "").replace(/-/g, "");
                     if (/^[A-Za-z0-9.]+$/.test(s)) {
                         s += "[];";
                     }
@@ -99,8 +110,9 @@ function wsdlTypeToInterfaceObj(obj, typeCollector) {
                 tr = to;
                 if (typeCollector && typeCollector.ns) {
                     const ss = wsdlTypeToInterfaceString(to);
-                    if (typeCollector.registered.hasOwnProperty(k2) && typeCollector.registered[k2] === ss) {
-                        tr = typeCollector.ns + ".I" + k2.replace(/-/g, '') + ";";
+                    if (typeCollector.registered.hasOwnProperty(k2) &&
+                        typeCollector.registered[k2] === ss) {
+                        tr = typeCollector.ns + ".I" + k2.replace(/-/g, "") + ";";
                     }
                     else if (typeCollector.collected.hasOwnProperty(k2)) {
                         if (typeCollector.collected[k2] !== ss) {
@@ -123,7 +135,9 @@ function wsdlTypeToInterfaceString(d, opts = {}) {
     for (const k of Object.keys(d)) {
         const t = typeof d[k];
         let p = k;
-        if (opts.quoteProperties || (opts.quoteProperties === undefined && !/^[A-Za-z][A-Za-z0-9_-]*$/.test(k))) {
+        if (opts.quoteProperties ||
+            (opts.quoteProperties === undefined &&
+                !/^[A-Za-z][A-Za-z0-9_-]*$/.test(k))) {
             p = JSON.stringify(k);
         }
         if (t === "string") {
@@ -132,13 +146,26 @@ function wsdlTypeToInterfaceString(d, opts = {}) {
                 const i = v.indexOf("*/") + 2;
                 r.push(v.substring(0, i));
                 // for types like "xsd:string" only the "string" part is used
-                const rawtype = v.substring(i).trim().replace('maxLength', 'string').replace('pattern', 'string').replace('totalDigits', 'string').replace('int', 'number').replace('dateTime', 'string').replace('date', 'string');
+                const rawtype = v
+                    .substring(i)
+                    .trim()
+                    .replace("maxLength", "string")
+                    .replace("pattern", "string")
+                    .replace("totalDigits", "number")
+                    .replace("fractionDigits", "")
+                    .replace("int", "number")
+                    .replace("dateTime", "string")
+                    .replace("date", "string");
                 const colon = rawtype.indexOf(":");
                 if (colon !== -1) {
                     const preamble = rawtype.substring(0, colon);
                     const lastOpenBracket = preamble.lastIndexOf("<");
                     if (lastOpenBracket !== -1) {
-                        r.push("'" + p + "': " + preamble.substring(0, lastOpenBracket + 1) + rawtype.substring(colon + 1));
+                        r.push("'" +
+                            p +
+                            "': " +
+                            preamble.substring(0, lastOpenBracket + 1) +
+                            rawtype.substring(colon + 1));
                     }
                     else {
                         r.push("'" + p + "': " + rawtype.substring(colon + 1));
@@ -153,7 +180,11 @@ function wsdlTypeToInterfaceString(d, opts = {}) {
             }
         }
         else {
-            r.push("'" + p + "': " + wsdlTypeToInterfaceString(d[k], opts).replace(/\n/g, "\n    ") + ";");
+            r.push("'" +
+                p +
+                "': " +
+                wsdlTypeToInterfaceString(d[k], opts).replace(/\n/g, "\n    ") +
+                ";");
         }
     }
     if (r.length === 0) {
@@ -227,20 +258,26 @@ export function wsdl2ts(wsdlUri, opts) {
                 }
                 const collectedKeys = Object.keys(collector.registered);
                 if (collectedKeys.length) {
-                    const ns = r.namespaces[service][port][collector.ns] = {};
+                    const ns = (r.namespaces[service][port][collector.ns] = {});
                     for (const k of collectedKeys) {
-                        ns[k] = "export interface I" + k.replace(/-/g, '') + " " + collector.registered[k];
+                        ns[k] =
+                            "export interface I" +
+                                k.replace(/-/g, "") +
+                                " " +
+                                collector.registered[k];
                     }
                 }
                 for (const method of Object.keys(d[service][port])) {
-                    r.types[service][port]["I" + method + "Input"] =
-                        wsdlTypeToInterface(d[service][port][method].input || {}, collector, opts);
-                    r.types[service][port]["I" + method + "Output"] =
-                        wsdlTypeToInterface(d[service][port][method].output || {}, collector, opts);
+                    r.types[service][port]["I" + method + "Input"] = wsdlTypeToInterface(d[service][port][method].input || {}, collector, opts);
+                    r.types[service][port]["I" + method + "Output"] = wsdlTypeToInterface(d[service][port][method].output || {}, collector, opts);
                     r.methods[service][port][method] =
-                        "(input: I" + method + "Input, " +
+                        "(input: I" +
+                            method +
+                            "Input, " +
                             "cb: (err: any | null," +
-                            " result: I" + method + "Output," +
+                            " result: I" +
+                            method +
+                            "Output," +
                             " raw: string, " +
                             " soapHeader: {[k: string]: any; }) => any, " +
                             "options?: any, " +
@@ -256,8 +293,12 @@ function cloneObj(a) {
     const b = {};
     for (const k of Object.keys(a)) {
         const t = typeof a[k];
-        b[k] = t === "object" ?
-            Array.isArray(a[k]) ? a[k].slice() : cloneObj(a[k]) : a[k];
+        b[k] =
+            t === "object"
+                ? Array.isArray(a[k])
+                    ? a[k].slice()
+                    : cloneObj(a[k])
+                : a[k];
     }
     return b;
 }
@@ -288,7 +329,8 @@ export function mergeTypedWsdl(a, ...bs) {
                     else {
                         x.files[service][port] = b.files[service][port];
                         for (const method of Object.keys(b.methods[service][port])) {
-                            x.methods[service][port][method] = b.methods[service][port][method];
+                            x.methods[service][port][method] =
+                                b.methods[service][port][method];
                         }
                         for (const type of Object.keys(b.types[service][port])) {
                             x.types[service][port][type] = b.types[service][port][type];
@@ -299,7 +341,8 @@ export function mergeTypedWsdl(a, ...bs) {
                             }
                             else {
                                 for (const nsi of Object.keys(b.namespaces[service][port][ns])) {
-                                    x.namespaces[service][port][ns][nsi] = b.namespaces[service][port][ns][nsi];
+                                    x.namespaces[service][port][ns][nsi] =
+                                        b.namespaces[service][port][ns][nsi];
                                 }
                             }
                         }
@@ -314,10 +357,16 @@ export function outputTypedWsdl(a) {
     const r = [];
     for (const service of Object.keys(a.files)) {
         for (const port of Object.keys(a.files[service])) {
-            const d = { file: a.files[service][port], data: [] };
+            const d = {
+                file: a.files[service][port],
+                data: [],
+            };
             if (a.types[service] && a.types[service][port]) {
                 for (const type of Object.keys(a.types[service][port])) {
-                    d.data.push("export interface " + type.replace(/-/g, '') + " " + a.types[service][port][type]);
+                    d.data.push("export interface " +
+                        type.replace(/-/g, "") +
+                        " " +
+                        a.types[service][port][type]);
                 }
             }
             if (a.methods[service] && a.methods[service][port]) {
@@ -326,7 +375,11 @@ export function outputTypedWsdl(a) {
                     ms.push(method + ": " + a.methods[service][port][method] + ";");
                 }
                 if (ms.length) {
-                    d.data.push("export interface I" + port.replace(/-/g, '') + "Soap {\n    " + ms.join("\n    ") + "\n}");
+                    d.data.push("export interface I" +
+                        port.replace(/-/g, "") +
+                        "Soap {\n    " +
+                        ms.join("\n    ") +
+                        "\n}");
                 }
             }
             if (a.namespaces[service] && a.namespaces[service][port]) {
