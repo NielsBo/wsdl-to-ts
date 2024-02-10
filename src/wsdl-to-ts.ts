@@ -254,7 +254,7 @@ export function wsdl2ts(wsdlUri: string, opts?: IInterfaceOptions): Promise<ITyp
                 if (collectedKeys.length) {
                     const ns: { [k: string]: string } = r.namespaces[service][port][collector.ns] = {};
                     for (const k of collectedKeys) {
-                        ns[k] = "export interface I" + k.replace('-','') + " " + collector.registered[k];
+                        ns[k] = "export interface I" + k.replace(/-/g,'') + " " + collector.registered[k];
                     }
                 }
 
@@ -345,7 +345,7 @@ export function outputTypedWsdl(a: ITypedWsdl): Array<{ file: string, data: stri
             const d: { file: string, data: string[] } = { file: a.files[service][port], data: [] };
             if (a.types[service] && a.types[service][port]) {
                 for (const type of Object.keys(a.types[service][port])) {
-                    d.data.push("export interface " + type.replace('-','') + " " + a.types[service][port][type]);
+                    d.data.push("export interface " + type.replace(/-/g,'') + " " + a.types[service][port][type]);
                 }
             }
             if (a.methods[service] && a.methods[service][port]) {
@@ -354,7 +354,7 @@ export function outputTypedWsdl(a: ITypedWsdl): Array<{ file: string, data: stri
                     ms.push(method + ": " + a.methods[service][port][method] + ";");
                 }
                 if (ms.length) {
-                    d.data.push("export interface I" + port.replace('-','') + "Soap {\n    " + ms.join("\n    ") + "\n}");
+                    d.data.push("export interface I" + port.replace(/-/g,'') + "Soap {\n    " + ms.join("\n    ") + "\n}");
                 }
             }
             if (a.namespaces[service] && a.namespaces[service][port]) {
