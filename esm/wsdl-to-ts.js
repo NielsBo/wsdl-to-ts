@@ -150,6 +150,7 @@ function wsdlTypeToInterfaceString(d, opts = {}) {
                     .substring(i)
                     .trim()
                     .replace("maxLength", "string")
+                    .replace("length", "string")
                     .replace("pattern", "string")
                     .replace("totalDigits", "number")
                     .replace("fractionDigits", "")
