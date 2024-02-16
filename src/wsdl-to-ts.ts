@@ -360,6 +360,7 @@ export function wsdl2ts(
             "extraHeaders?: any" +
             ") => void";
         }
+        break; // Only generate first port
       }
     }
 

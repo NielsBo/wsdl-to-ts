@@ -286,6 +286,7 @@ export function wsdl2ts(wsdlUri, opts) {
                             "extraHeaders?: any" +
                             ") => void";
                 }
+                break; // Only generate first port
             }
         }
         return r;
