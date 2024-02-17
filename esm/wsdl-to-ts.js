@@ -97,7 +97,7 @@ function wsdlTypeToInterfaceObj(obj, typeCollector) {
                 }
                 else {
                     s = s.trim().replace(/;$/, "").replace(/-/g, "");
-                    if (/^[A-Za-z0-9.]+$/.test(s)) {
+                    if (/^[A-Za-z0-9._]+$/.test(s)) {
                         s += "[];";
                     }
                     else {
