@@ -91,7 +91,7 @@ function wsdlTypeToInterfaceObj(
         typeClass = typeClass.replace(/-/g, "");
       }
       if (isArray) {
-        if (/^[A-Za-z0-9.]+$/.test(typeClass)) {
+        if (/^[A-Za-z0-9._]+$/.test(typeClass)) {
           typeClass += "[]";
         } else {
           typeClass = "Array<" + typeClass + ">";
