@@ -149,7 +149,7 @@ function wsdlTypeToInterfaceString(d, opts = {}) {
                 const rawtype = v
                     .substring(i)
                     .trim()
-                    .replace("minLength", "string")
+                    .replace("minLength", "")
                     .replace("maxLength", "string")
                     .replace("length", "string")
                     .replace("pattern", "string")
@@ -158,7 +158,6 @@ function wsdlTypeToInterfaceString(d, opts = {}) {
                     .replace("int", "number")
                     .replace("dateTime", "string")
                     .replace("date", "string")
-                    .replace("stringstring", "string")
                     .replace(",", "");
                 const colon = rawtype.indexOf(":");
                 if (colon !== -1) {
