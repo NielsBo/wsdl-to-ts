@@ -196,6 +196,7 @@ function wsdlTypeToInterfaceString(
           .replace("int", "number")
           .replace("dateTime", "string")
           .replace("date", "string")
+          .replace("stringstring", "string")
           .replace(",", "");
         const colon = rawtype.indexOf(":");
         if (colon !== -1) {
