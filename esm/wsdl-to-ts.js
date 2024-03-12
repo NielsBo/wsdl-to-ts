@@ -149,6 +149,7 @@ function wsdlTypeToInterfaceString(d, opts = {}) {
                 const rawtype = v
                     .substring(i)
                     .trim()
+                    .replace("minLength", "string")
                     .replace("maxLength", "string")
                     .replace("length", "string")
                     .replace("pattern", "string")
