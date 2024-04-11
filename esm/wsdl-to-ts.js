@@ -21,7 +21,7 @@ export class TypeCollector {
     }
 }
 function isNumberTypeClass(superTypeClass) {
-    return (["double", "integer", "decimal", "int", "totalDigits"].indexOf(superTypeClass.replace("xs:", "").replace("xsd:", "")) > -1);
+    return (["double", "integer", "decimal", "int", "totalDigits", "ser:duration"].indexOf(superTypeClass.replace("xs:", "").replace("xsd:", "")) > -1);
 }
 function wsdlTypeToInterfaceObj(obj, typeCollector) {
     const r = {};

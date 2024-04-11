@@ -47,7 +47,7 @@ export class TypeCollector {
 
 function isNumberTypeClass(superTypeClass: string) {
   return (
-    ["double", "integer", "decimal", "int", "totalDigits"].indexOf(
+    ["double", "integer", "decimal", "int", "totalDigits", "ser:duration"].indexOf(
       superTypeClass.replace("xs:", "").replace("xsd:", "")
     ) > -1
   );
