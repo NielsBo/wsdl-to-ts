@@ -33,9 +33,9 @@
     "typescript": "^2.2.0"
   },
   "dependencies": {
-    "minimist": "^1.2.0",
+    "minimist": "1.2.8",
     "mkdirp": ">=0.5.1 <1.0.0",
-    "soap": "^1.0.0"
+    "soap": "^1.0.3"
   },
   "bugs": {
     "url": "https://github.com/TimLuq/wsdl-to-ts/issues"
